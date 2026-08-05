@@ -1,0 +1,221 @@
+:root {
+  --bg: #0b1020;
+  --card: #121a30;
+  --card-2: #0e1628;
+  --text: #e7efff;
+  --muted: #9ab0d6;
+  --accent: #38d39f;
+  --accent-2: #ffa62b;
+  --danger: #ff6b6b;
+  --line: #2a3a62;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Space Grotesk', sans-serif;
+  background: radial-gradient(1200px 600px at 10% 10%, #1a2442, transparent 65%),
+    radial-gradient(900px 500px at 90% 85%, #243665, transparent 70%), var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+.bg-glow {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.015) 0 2px, transparent 2px 14px);
+}
+
+.app {
+  max-width: 1100px;
+  margin: 24px auto;
+  padding: 12px;
+}
+
+.card {
+  background: linear-gradient(180deg, var(--card), var(--card-2));
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+}
+
+.login-card {
+  max-width: 480px;
+  margin: 60px auto;
+  padding: 24px;
+}
+
+#authToggleBtn {
+  margin-top: 10px;
+  width: 100%;
+  background: transparent;
+  color: var(--muted);
+  border: 1px dashed var(--line);
+}
+
+#authStatus {
+  min-height: 20px;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0 0 8px;
+}
+
+p {
+  margin-top: 0;
+  color: var(--muted);
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--muted);
+}
+
+input,
+select,
+button {
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: #0f1830;
+  color: var(--text);
+  font: inherit;
+  padding: 10px 12px;
+}
+
+button {
+  cursor: pointer;
+  background: linear-gradient(90deg, var(--accent), #2bc4e2);
+  color: #081420;
+  font-weight: 700;
+}
+
+form {
+  display: grid;
+  gap: 10px;
+}
+
+.hint code {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.hidden {
+  display: none;
+}
+
+.chat-shell {
+  padding: 14px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 160px repeat(3, auto);
+  gap: 8px;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 12px;
+}
+
+.panel {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+ul {
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0;
+}
+
+li {
+  border-bottom: 1px solid rgba(154, 176, 214, 0.2);
+  padding: 5px 0;
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+}
+
+.chat-panel {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px;
+  display: grid;
+  gap: 8px;
+}
+
+.messages {
+  min-height: 320px;
+  max-height: 420px;
+  overflow: auto;
+  padding: 10px;
+  border-radius: 10px;
+  background: #0a1125;
+  border: 1px solid #1d2b4e;
+}
+
+.msg {
+  margin-bottom: 8px;
+  line-height: 1.35;
+}
+
+.msg .meta {
+  color: var(--accent-2);
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.msg.system .meta {
+  color: var(--accent);
+}
+
+.msg.error .meta {
+  color: var(--danger);
+}
+
+.inline-form {
+  grid-template-columns: 1fr 1fr auto;
+  display: grid;
+  gap: 8px;
+}
+
+#messageForm {
+  grid-template-columns: 1fr auto;
+}
+
+@media (max-width: 900px) {
+  .topbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .actions {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .inline-form {
+    grid-template-columns: 1fr;
+  }
+}

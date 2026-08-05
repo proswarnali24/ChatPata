@@ -1,0 +1,29 @@
+{
+  "name": "chatpata-multi-client-chat",
+  "version": "1.0.0",
+  "description": "ChatPata web chat app using the IT-College-main2 Assignment_3 interface and system",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "server": "node server.js"
+  },
+  "keywords": [
+    "chat",
+    "socket.io",
+    "nodejs",
+    "rooms",
+    "direct-message"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.2.2",
+    "socket.io": "^4.8.1"
+  }
+}

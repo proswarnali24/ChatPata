@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChatPata</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <div class="bg-glow"></div>
+    <main class="app">
+      <section class="card login-card" id="loginCard">
+        <h1>ChatPata</h1>
+        <p>Realtime rooms, direct messages, media sharing, and secure login.</p>
+        <form id="loginForm">
+          <label for="username">Username</label>
+          <input id="username" name="username" maxlength="24" required placeholder="e.g. sornalisen" />
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" minlength="4" required placeholder="Your password" />
+          <button id="authSubmitBtn" type="submit">Login & Connect</button>
+        </form>
+        <p class="hint" id="authStatus">Use your account to continue.</p>
+        <button id="authToggleBtn" type="button">Need an account? Register</button>
+        <p class="hint">Server: <code id="serverHint"></code></p>
+      </section>
+
+      <section class="card hidden chat-shell" id="chatShell">
+        <header class="topbar">
+          <div>
+            <h2 id="welcomeText">Welcome</h2>
+            <small id="activeRoomLabel">Active room: lobby</small>
+          </div>
+          <div class="actions">
+            <input id="roomInput" placeholder="room name" />
+            <button id="joinBtn" type="button">Join</button>
+            <button id="leaveBtn" type="button">Leave</button>
+            <button id="setRoomBtn" type="button">Use Room</button>
+          </div>
+        </header>
+
+        <div class="content-grid">
+          <aside class="panel">
+            <h3>Users</h3>
+            <ul id="userList"></ul>
+            <h3>Rooms</h3>
+            <ul id="roomList"></ul>
+          </aside>
+
+          <section class="chat-panel">
+            <div class="messages" id="messages"></div>
+
+            <form id="dmForm" class="inline-form">
+              <input id="dmUser" placeholder="DM user" required />
+              <input id="dmText" placeholder="DM message" required />
+              <button type="submit">Send DM</button>
+            </form>
+
+            <form id="messageForm" class="inline-form">
+              <input id="messageInput" placeholder="Message to active room" required />
+              <button type="submit">Send</button>
+            </form>
+
+            <form id="fileForm" class="inline-form">
+              <input id="fileRoom" placeholder="room for file" required />
+              <input id="fileInput" type="file" required />
+              <button type="submit">Send File</button>
+            </form>
+
+            <form id="confirmForm" class="inline-form">
+              <input id="confirmId" placeholder="OTP request ID" required />
+              <select id="confirmDecision">
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </select>
+              <button type="submit">Confirm</button>
+            </form>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/app.js"></script>
+  </body>
+</html>

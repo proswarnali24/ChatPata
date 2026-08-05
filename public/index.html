@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChatPata</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="app-container">
+      <aside class="sidebar">
+        <header class="sidebar-header">
+          <div class="brand"><i class="fas fa-comments"></i> ChatPata</div>
+          <div class="header-right-actions">
+            <i class="fas fa-sun toggle-theme" title="Toggle Theme"></i>
+          </div>
+        </header>
+
+        <!-- USER PROFILE BAR -->
+        <div id="user-profile-bar" class="user-profile-bar" style="display: none;">
+          <div class="user-profile-info">
+            <div class="user-avatar-sm" id="user-avatar-initial">?</div>
+            <div class="user-details">
+              <span id="current-user-display" class="user-name">Guest</span>
+              <span class="user-status-dot">Online</span>
+            </div>
+          </div>
+          <button id="logout-btn" onclick="logoutUser()" title="Logout" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+        </div>
+
+        <div class="sidebar-content">
+          <h2>Chats</h2>
+          <div class="search-wrapper">
+            <input
+              type="text"
+              id="roomInput"
+              placeholder="Create or Join a Group"
+            />
+            <div class="search-actions">
+              <button
+                id="createBtn"
+                onclick="createGroup()"
+                title="Create Group"
+              >
+                <i class="fas fa-plus"></i>
+              </button>
+              <button id="joinBtn" onclick="joinGroup()" title="Join Group">
+                <i class="fas fa-sign-in-alt"></i>
+              </button>
+            </div>
+          </div>
+
+         <div class="chat-list" id="sidebar-list">
+            <div id="dynamic-groups"></div>
+            
+            <h2
+              style="
+                margin-top: 20px;
+                font-size: 1rem;
+                border-top: 1px solid rgba(0, 0, 0, 0.1);
+                padding-top: 15px;
+              "
+            >
+              Online Now
+            </h2>
+            <div class="chat-list" id="online-users-list"></div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="chat-main">
+        <header class="chat-header">
+          <div class="header-user">
+            <div class="avatar-header"></div>
+            <div class="user-meta">
+              <span id="active-chat-title" class="name">Global Feed</span>
+              <span id="header-status" class="status">online</span>
+            </div>
+          </div>
+          <div class="header-actions">
+            <i class="fas fa-video"></i>
+            <i class="fas fa-phone"></i>
+            <i class="fas fa-search"></i>
+            <i class="fas fa-ellipsis-v"></i>
+          </div>
+        </header>
+
+        <div id="chat-window">
+          <div class="date-divider"><span>Today</span></div>
+        </div>
+
+        <footer class="input-area">
+          <!-- EMOJI PICKER POPOVER -->
+          <div id="emoji-picker" class="emoji-picker-popover" style="display: none;">
+            <div class="emoji-picker-header">
+              <span>Choose an Emoji</span>
+              <button type="button" onclick="toggleEmojiPicker(event)" class="emoji-close-btn">&times;</button>
+            </div>
+            <div class="emoji-picker-categories">
+              <button type="button" class="emoji-cat-btn active" onclick="switchEmojiCategory('smileys', this)">😀</button>
+              <button type="button" class="emoji-cat-btn" onclick="switchEmojiCategory('gestures', this)">👍</button>
+              <button type="button" class="emoji-cat-btn" onclick="switchEmojiCategory('hearts', this)">❤️</button>
+              <button type="button" class="emoji-cat-btn" onclick="switchEmojiCategory('animals', this)">🐶</button>
+              <button type="button" class="emoji-cat-btn" onclick="switchEmojiCategory('food', this)">🍕</button>
+              <button type="button" class="emoji-cat-btn" onclick="switchEmojiCategory('objects', this)">🎉</button>
+            </div>
+            <div id="emoji-grid" class="emoji-grid"></div>
+          </div>
+
+          <div class="input-pill">
+            <label for="fileInput" class="icon-btn" title="Attach Image">
+              <i class="fas fa-plus"></i>
+            </label>
+            <input type="file" id="fileInput" accept="image/*" hidden />
+
+            <i class="far fa-smile icon-btn" id="emoji-toggle-btn" onclick="toggleEmojiPicker(event)" title="Add Emojis"></i>
+
+            <input
+              type="text"
+              id="msgInput"
+              placeholder="Type a Message..."
+              onkeydown="handleEnter(event)"
+            />
+
+            <button onclick="sendMessage()" class="send-btn">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+
+          <div id="file-preview" class="file-preview" style="display: none">
+            <span id="file-name">image.jpg</span>
+            <button
+              onclick="clearFile()"
+              style="
+                color: red;
+                border: none;
+                background: none;
+                cursor: pointer;
+              "
+            >
+              &times;
+            </button>
+          </div>
+        </footer>
+      </main>
+    </div>
+
+    <div id="otp-modal" class="modal" style="display: none">
+      <div class="modal-content">
+        <h3>⚠️ Privacy Warning</h3>
+        <p>
+          It looks like you might be sending an OTP or private PIN. Are you sure
+          you want to share this with the group?
+        </p>
+        <div
+          style="display: flex; justify-content: space-around; margin-top: 20px"
+        >
+          <button id="cancel-otp" style="background: #ccc; color: #333">
+            Cancel
+          </button>
+          <button id="confirm-otp" style="background: #e74c3c; color: white">
+            Send Anyway
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODERN AUTH MODAL -->
+    <div id="auth-modal" class="modal" style="display: none">
+      <div class="modal-card">
+        <div class="auth-header-brand">
+          <div class="auth-logo"><i class="fas fa-comments"></i></div>
+          <h2>Welcome to ChatPata</h2>
+          <p id="auth-subtitle">Sign in or create an account to start chatting</p>
+        </div>
+
+        <!-- AUTH TABS -->
+        <div class="auth-tabs">
+          <button id="tab-login" class="auth-tab active" onclick="switchAuthTab(true)">Login</button>
+          <button id="tab-register" class="auth-tab" onclick="switchAuthTab(false)">Sign Up</button>
+        </div>
+
+        <form id="auth-form" onsubmit="handleAuthSubmit(event)">
+          <div class="input-group">
+            <label for="auth-username"><i class="fas fa-user"></i> Username</label>
+            <input type="text" id="auth-username" placeholder="Enter username (min 3 chars)" autocomplete="username" required />
+          </div>
+
+          <div class="input-group">
+            <label for="auth-password"><i class="fas fa-lock"></i> Password</label>
+            <div class="password-wrapper">
+              <input type="password" id="auth-password" placeholder="Enter password (min 6 chars)" autocomplete="current-password" required />
+              <i class="fas fa-eye toggle-password" onclick="togglePasswordVisibility('auth-password', this)"></i>
+            </div>
+          </div>
+
+          <div class="input-group" id="confirm-password-group" style="display: none;">
+            <label for="auth-confirm-password"><i class="fas fa-shield-alt"></i> Confirm Password</label>
+            <div class="password-wrapper">
+              <input type="password" id="auth-confirm-password" placeholder="Re-enter password" autocomplete="new-password" />
+              <i class="fas fa-eye toggle-password" onclick="togglePasswordVisibility('auth-confirm-password', this)"></i>
+            </div>
+          </div>
+
+          <div id="auth-error" class="auth-alert"></div>
+
+          <button type="submit" id="auth-action-btn" class="auth-submit-btn">
+            <span>Login</span> <i class="fas fa-arrow-right"></i>
+          </button>
+        </form>
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

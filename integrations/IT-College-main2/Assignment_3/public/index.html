@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChatPata</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="app-container">
+      <aside class="sidebar">
+        <header class="sidebar-header">
+          <div class="brand">ChatPata</div>
+          <i class="fas fa-sun toggle-theme"></i>
+        </header>
+
+        <div class="sidebar-content">
+          <h2>Chats</h2>
+          <div class="search-wrapper">
+            <input
+              type="text"
+              id="roomInput"
+              placeholder="Create or Join a Group"
+            />
+            <div class="search-actions">
+              <button
+                id="createBtn"
+                onclick="createGroup()"
+                title="Create Group"
+              >
+                <i class="fas fa-plus"></i>
+              </button>
+              <button id="joinBtn" onclick="joinGroup()" title="Join Group">
+                <i class="fas fa-sign-in-alt"></i>
+              </button>
+            </div>
+          </div>
+
+         <div class="chat-list" id="sidebar-list">
+            <div id="dynamic-groups"></div>
+            
+            <h2
+              style="
+                margin-top: 20px;
+                font-size: 1rem;
+                border-top: 1px solid rgba(0, 0, 0, 0.1);
+                padding-top: 15px;
+              "
+            >
+              Online Now
+            </h2>
+            <div class="chat-list" id="online-users-list"></div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="chat-main">
+        <header class="chat-header">
+          <div class="header-user">
+            <div class="avatar-header"></div>
+            <div class="user-meta">
+              <span id="active-chat-title" class="name">Global Feed</span>
+              <span class="status">online</span>
+            </div>
+          </div>
+          <div class="header-actions">
+            <i class="fas fa-video"></i>
+            <i class="fas fa-phone"></i>
+            <i class="fas fa-search"></i>
+            <i class="fas fa-ellipsis-v"></i>
+          </div>
+        </header>
+
+        <div id="chat-window">
+          <div class="date-divider"><span>Today</span></div>
+        </div>
+
+        <footer class="input-area">
+          <div class="input-pill">
+            <label for="fileInput" class="icon-btn">
+              <i class="fas fa-plus"></i>
+            </label>
+            <input type="file" id="fileInput" accept="image/*" hidden />
+
+            <i class="far fa-smile icon-btn"></i>
+
+            <input
+              type="text"
+              id="msgInput"
+              placeholder="Type a Message"
+              onkeydown="handleEnter(event)"
+            />
+
+            <button onclick="sendMessage()" class="send-btn">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+
+          <div id="file-preview" class="file-preview" style="display: none">
+            <span id="file-name">image.jpg</span>
+            <button
+              onclick="clearFile()"
+              style="
+                color: red;
+                border: none;
+                background: none;
+                cursor: pointer;
+              "
+            >
+              &times;
+            </button>
+          </div>
+        </footer>
+      </main>
+    </div>
+
+    <div id="otp-modal" class="modal" style="display: none">
+      <div class="modal-content">
+        <h3>⚠️ Privacy Warning</h3>
+        <p>
+          It looks like you might be sending an OTP or private PIN. Are you sure
+          you want to share this with the group?
+        </p>
+        <div
+          style="display: flex; justify-content: space-around; margin-top: 20px"
+        >
+          <button id="cancel-otp" style="background: #ccc; color: #333">
+            Cancel
+          </button>
+          <button id="confirm-otp" style="background: #e74c3c; color: white">
+            Send Anyway
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="auth-modal" class="modal" style="display: none">
+      <div class="modal-content">
+        <h3 id="auth-title">Login to Chat</h3>
+        <p>Please enter your credentials.</p>
+        <input type="text" id="auth-username" placeholder="Username" />
+        <input type="password" id="auth-password" placeholder="Password" />
+        <div
+          id="auth-error"
+          style="
+            color: #e74c3c;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            min-height: 15px;
+          "
+        ></div>
+
+        <button id="auth-action-btn" onclick="performAuth()">Login</button>
+
+        <p
+          style="
+            font-size: 0.85rem;
+            margin-top: 20px;
+            color: #555;
+            cursor: pointer;
+          "
+          onclick="toggleAuthMode()"
+        >
+          <strong id="auth-toggle-text">Need an account? Register here.</strong>
+        </p>
+      </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
