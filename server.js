@@ -5,7 +5,6 @@ const { Server } = require("socket.io");
 const path = require("path");
 const fs = require("fs");
 const mongoose = require("mongoose");
-const { GoogleGenerativeAI } = require("@google/generative-ai");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -295,7 +294,7 @@ if (process.env.GEMINI_API_KEY) {
 
 const userSpamTracker = new Map();
 
-async function getSoothingResponse(text, username) {
+function getSoothingResponse(text, username) {
   if (!text) return null;
 
   const toxicWords = ["pagol", "stupid", "idiot", "hate", "bad", "dumb", "fool", "trash", "loser", "shut up"];
@@ -318,16 +317,13 @@ async function getSoothingResponse(text, username) {
     return "You are sending upset messages very quickly. Please pause, take a deep breath, and let your mind settle before typing again.";
   }
 
-  if (!genAI) return "Let's take a deep breath. We keep this space positive and kind.";
-
-  try {
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
-    const prompt = `A user sent: "${text}". It was flagged as trolling. Generate a 1 sentence soothing, calming response to ease their mental state. Do not scold them.`;
-    const result = await model.generateContent(prompt);
-    return result.response.text();
-  } catch (error) {
-    return "Let's take a deep breath. We keep this space positive and kind.";
-  }
+  const calmingResponses = [
+    "Let's take a deep breath. We keep this space positive and kind.",
+    "Peace and kindness make our chat a warmer place for everyone.",
+    "Take a moment to relax and let your mind settle before typing.",
+    "Let's focus on positivity and constructive conversations."
+  ];
+  return calmingResponses[Math.floor(Math.random() * calmingResponses.length)];
 }
 
 // --- HELPER FUNCTIONS ---
