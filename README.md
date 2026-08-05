@@ -114,8 +114,6 @@ ChatPata-main/
 
 ---
 
-## 👤 Author & License
+## 👤 Author
 
 Developed with ❤️ by **[Swarnali](https://github.com/proswarnali24)**.
-
-This project is licensed under the **MIT License** — feel free to modify and use!
