@@ -289,7 +289,7 @@ let genAI = null;
 if (process.env.GEMINI_API_KEY) {
   genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 } else {
-  console.warn("WARNING: No GEMINI_API_KEY found in .env. Trolling responses will use local fallback.");
+  console.warn("WARNING: Trolling responses will use local fallback.");
 }
 
 const userSpamTracker = new Map();
