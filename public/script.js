@@ -201,21 +201,51 @@ function requestNotificationPermission() {
   }
 }
 
+let globalAudioCtx = null;
+
+function getAudioContext() {
+  try {
+    if (!globalAudioCtx) {
+      globalAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (globalAudioCtx.state === "suspended") {
+      globalAudioCtx.resume();
+    }
+    return globalAudioCtx;
+  } catch (e) {
+    return null;
+  }
+}
+
+function unlockAudio() {
+  const ctx = getAudioContext();
+  if (ctx && ctx.state === "suspended") {
+    ctx.resume();
+  }
+  window.removeEventListener("click", unlockAudio);
+  window.removeEventListener("keydown", unlockAudio);
+}
+window.addEventListener("click", unlockAudio);
+window.addEventListener("keydown", unlockAudio);
+
 function playNotificationSound() {
   try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const ctx = getAudioContext();
+    if (!ctx) return;
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
     osc.type = "sine";
-    osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
-    osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.12); // A5
-    gain.gain.setValueAtTime(0.12, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.22);
+    osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5 chime
+    osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.12); // A5 chime
+    gain.gain.setValueAtTime(0.25, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.28);
     osc.connect(gain);
     gain.connect(ctx.destination);
     osc.start();
-    osc.stop(ctx.currentTime + 0.22);
-  } catch (e) {}
+    osc.stop(ctx.currentTime + 0.28);
+  } catch (e) {
+    console.error("Audio chime error:", e);
+  }
 }
 
 function showNotification(title, body) {
